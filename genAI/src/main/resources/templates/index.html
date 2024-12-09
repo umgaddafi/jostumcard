@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Files for Download</title>
+    
+   
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+   
+    <style>
+       
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .file-list {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .file-list ul {
+            list-style: none;
+        }
+
+        .file-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+
+        .file-list li:hover {
+            background-color: #f9f9f9;
+        }
+
+        .file-list span {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .download-btn {
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .no-files {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="color: green;">ID CARD Files Available  for Download</h1>
+
+    <div class="file-list">
+        <ul>
+            <!-- Iterate over the list of files. If empty, show a 'No files' message -->
+            <li th:each="file : ${files}" th:unless="${files.isEmpty()}">
+                <!-- Display the file name -->
+                <span th:text="${file}"></span>
+                <!-- Create a download link -->
+                <a th:href="@{/download(filename=${file})}" class="download-btn" download>Download</a>
+            </li>
+        </ul>
+        <p class="no-files" th:if="${files.isEmpty()}">No files available for download</p>
+    </div>
+
+    <!-- Optional: Add some JavaScript interactivity if necessary -->
+    <script>
+        // Example: Add a simple confirmation message when a user clicks a download link
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                const fileName = this.previousElementSibling.textContent;
+                const userConfirmed = confirm(`Are you sure you want to download "${fileName}"?`);
+                if (!userConfirmed) {
+                    event.preventDefault(); // Stop the download if not confirmed
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
